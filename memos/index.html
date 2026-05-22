@@ -76,12 +76,6 @@
         TOP
       </button>
 
-      <div class="post-comment inner">
-        <div class="post-comment">
-          <div id="tcomment"></div>
-        </div>
-      </div>
-
       <!-- Footer -->
 <footer id="footer" style="text-align: center;">
   <div class="inner">
@@ -115,7 +109,6 @@
           creatorId: '',
           domId: 'bber',
           twiEnv: '',
-          commentEl: 'tcomment',
         };
 
         function loadScript(src, options) {
@@ -137,13 +130,23 @@
           loadScript('https://leslie-liuu.github.io//media/scripts/lately.min.js');
         }
 
-        if (bbMemos.twiEnv && document.getElementById(bbMemos.commentEl)) {
+        if (bbMemos.twiEnv) {
+          var commentOuter = document.createElement('div');
+          commentOuter.className = 'post-comment inner';
+          var commentInner = document.createElement('div');
+          commentInner.className = 'post-comment';
+          var commentEl = document.createElement('div');
+          commentEl.id = 'tcomment';
+          commentInner.appendChild(commentEl);
+          commentOuter.appendChild(commentInner);
+          document.getElementById('footer').before(commentOuter);
+
           loadScript('https://cdn.staticfile.org/twikoo/twikoo.all.min.js', {
             onload: function () {
               if (window.twikoo) {
                 window.twikoo.init({
                   envId: bbMemos.twiEnv,
-                  el: '#' + bbMemos.commentEl,
+                  el: '#tcomment',
                 });
               }
             },
