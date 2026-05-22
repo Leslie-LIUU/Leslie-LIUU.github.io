@@ -72,9 +72,15 @@
       </div>
 
       <!-- back to top -->
-      <button oneclik="topFunction()" id="BackToTop">
+      <button id="BackToTop">
         TOP
       </button>
+
+      <div class="post-comment inner">
+        <div class="post-comment">
+          <div id="tcomment"></div>
+        </div>
+      </div>
 
       <!-- Footer -->
 <footer id="footer" style="text-align: center;">
@@ -102,22 +108,48 @@
     <script src="https://leslie-liuu.github.io//media/scripts/util.js"></script>
     <script src="https://leslie-liuu.github.io//media/scripts/main.js"></script>
     <script type="text/javascript">
+      (function () {
         var bbMemos = {
-        memos : 'https://',
-        limit : '',
-        creatorId:'',
-        domId: '',
-        twiEnv:'',
+          memos: '',
+          limit: '',
+          creatorId: '',
+          domId: 'bber',
+          twiEnv: '',
+          commentEl: 'tcomment',
+        };
+
+        function loadScript(src, options) {
+          var script = document.createElement('script');
+          script.src = src;
+          if (options && options.type) script.type = options.type;
+          if (options && options.onload) script.onload = options.onload;
+          document.body.appendChild(script);
         }
-    </script>
-    <script src="https://cdn.staticfile.org/twikoo//twikoo.all.min.js"></script>
-    <script type="module" src="https://immmmm.com/emaction.js?v=2308071"></script>
-    <script src="https://immmmm.com/bb-lmm-mk.js"></script>
-    <script src="https://leslie-liuu.github.io//media/scripts/marked.min.js"></script>
-    <script src="https://leslie-liuu.github.io//media/scripts/view-image.min.js"></script>
-    <script src="https://leslie-liuu.github.io//media/scripts/lately.min.js"></script>
-    <script type="text/javascript">
-      twikoo.init({envId: "",el: '#tcomment'});
+
+        if (bbMemos.memos && bbMemos.memos !== 'https://') {
+          window.bbMemos = bbMemos;
+          loadScript('https://immmmm.com/emaction.js?v=2308071', {
+            type: 'module',
+          });
+          loadScript('https://immmmm.com/bb-lmm-mk.js');
+          loadScript('https://leslie-liuu.github.io//media/scripts/marked.min.js');
+          loadScript('https://leslie-liuu.github.io//media/scripts/view-image.min.js');
+          loadScript('https://leslie-liuu.github.io//media/scripts/lately.min.js');
+        }
+
+        if (bbMemos.twiEnv && document.getElementById(bbMemos.commentEl)) {
+          loadScript('https://cdn.staticfile.org/twikoo/twikoo.all.min.js', {
+            onload: function () {
+              if (window.twikoo) {
+                window.twikoo.init({
+                  envId: bbMemos.twiEnv,
+                  el: '#' + bbMemos.commentEl,
+                });
+              }
+            },
+          });
+        }
+      })();
     </script>
     <script>
       back_to_top();
